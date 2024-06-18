@@ -1,0 +1,108 @@
+# conky
+This configuration sets up Conky to display various system information such as date, time, weather, system details, CPU usage, memory usage, top processes, disk usage, networking details, and GPU information. Adjust the configuration and text sections as per your preferences and system setup.
+
+
+conky.config = {
+    alignment = 'top_right',              -- محاذاة Conky إلى الزاوية اليمنى العليا
+    background = false,                   -- تعيين الخلفية إلى غير شفافة
+    border_width = 1,                     -- عرض الإطار حول نافذة Conky
+    cpu_avg_samples = 2,                  -- عدد العينات لمتوسط استخدام CPU
+    default_color = '4EE84E',             -- اللون الأساسي للنص
+    default_outline_color = 'white',      -- اللون الأساسي للخط الخارجي للنص
+    default_shade_color = 'white',        -- اللون الأساسي للظل للنص
+    double_buffer = true,                 -- تمكين التخزين المؤقت المزدوج لتقليل الوميض
+    draw_borders = false,                 -- عدم رسم الحدود حول النافذة
+    draw_graph_borders = true,            -- رسم الحدود حول الرسوم البيانية
+    draw_outline = false,                 -- عدم رسم الخطوط الخارجية للنص
+    draw_shades = false,                  -- عدم رسم الظلال للنص
+    use_xft = true,                       -- تمكين Xft للرسم باستخدام الخطوط المتجهة
+    font = 'DejaVu Sans Mono:size=10',    -- تحديد الخط وحجمه
+    gap_x = 20,                           -- المسافة الأفقية بين النافذة وحافة الشاشة
+    gap_y = 100,                           -- المسافة العمودية بين النافذة وحافة الشاشة
+    minimum_height = 5,                   -- الحد الأدنى لارتفاع النافذة
+    minimum_width = 5,                    -- الحد الأدنى لعرض النافذة
+    net_avg_samples = 2,                  -- عدد العينات لمتوسط سرعة الشبكة
+    no_buffers = true,                    -- تجاهل التخزين المؤقت للذاكرة
+    out_to_console = false,               -- عدم الإرسال إلى وحدة التحكم
+    out_to_stderr = false,                -- عدم الإرسال إلى stderr
+    extra_newline = false,                -- عدم إضافة سطر جديد إضافي
+    own_window = true,                    -- تمكين نافذة Conky المستقلة
+    own_window_class = 'Conky',           -- تعيين فئة نافذة Conky
+    own_window_type = 'normal',           -- تعيين نوع النافذة إلى "normal"
+    own_window_transparent = true,        -- تمكين شفافية النافذة
+    own_window_argb_visual = true,        -- تمكين ARGB للنافذة
+    own_window_argb_value = 0,            -- تعيين قيمة شفافية النافذة
+    own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+    override_utf8_locale = true,          -- تجاوز إعدادات UTF-8 المحلية
+    show_graph_scale = false,             -- عدم عرض مقياس الرسوم البيانية
+    show_graph_range = false,             -- عدم عرض مدى الرسوم البيانية
+    update_interval = 1.0,                -- فاصل التحديث بالثواني
+    uppercase = false,                    -- عدم تحويل النص إلى أحرف كبيرة
+    use_spacer = 'none',                  -- عدم استخدام أي فاصل للنص
+    show_graph_range = false,             -- عدم عرض نطاق الرسم البياني
+    show_graph_scale = false,             -- عدم عرض مقياس الرسم البياني
+    use_spacer = 'none',                  -- عدم استخدام الفاصل
+    xinerama_head = 0,                    -- استخدام الشاشة الأولى في نظام متعدد الشاشات
+    default_bar_height = 6,               -- ارتفاع الشريط الافتراضي
+    default_gauge_height = 25,            -- ارتفاع مقياس الضغط الافتراضي
+    default_gauge_width = 40,             -- عرض مقياس الضغط الافتراضي
+    imlib_cache_size = 0,                 -- حجم ذاكرة التخزين المؤقت للصورة
+    lua_load = '',                        -- عدم تحميل أي سكربت Lua
+    lua_draw_hook_pre = '',               -- عدم استخدام أي هوك مسبق Lua
+    lua_draw_hook_post = '',              -- عدم استخدام أي هوك لاحق Lua
+    own_window = true,
+      
+    
+   }
+
+conky.text = [[
+${alignc}${font DejaVu Sans Mono:size=16}${color 4EE84E}${time %A, %B %d, %Y} 
+${alignc}${font DejaVu Sans Mono:size=16}${color 4EE84E}${time %H:%M:%S}${font}
+${alignc}${font DejaVu Sans Mono:size=16}${color}${execi 300 curl -s 'wttr.in/?format=%C+%t'}
+-----------------------
+${font DejaVu Sans Mono:size=12}${color 4EE84E}System Info${hr 2}${color}
+${font}${color}Distro:${alignr}${execi 3600 awk '{print $1, $2}' /etc/issue | tr -d '\n'}
+${font}${color}Version:${alignr}${execi 3600 awk '{print $3}' /etc/issue | tr -d '\n'}
+${font}${color}Hostname:$color ${alignr} ${nodename}
+${color}Kernel: ${alignr}${exec uname -r | awk -F. '{print $1 "." $2}'}
+${color}Uptime:$color ${alignr}${uptime}
+${color}Frequency (in MHz):$color ${alignr} ${freq}
+
+${font DejaVu Sans Mono:size=12}${color 4EE84E}CPU Usage${hr 2}${color}
+${font}${color}CPU 0: $color ${cpu cpu0}% ${cpubar 10;80 cpu0}
+${color}CPU 1: $color ${cpu cpu1}% ${cpubar 10;80 cpu1}
+${color}CPU 2: $color ${cpu cpu2}% ${cpubar 10;80 cpu2}
+${color}CPU 3: $color ${cpu cpu3}% ${cpubar 10;80 cpu3}
+
+${font DejaVu Sans Mono:size=12}${color 4EE84E}Top Processes${hr 2}${color}
+${font}${top name 1}${alignr}${top cpu 1}%
+${top name 2}${alignr}${top cpu 2}%
+${top name 3}${alignr}${top cpu 3}%
+${top name 4}${alignr}${top cpu 4}%
+
+${font DejaVu Sans Mono:size=12}${color 4EE84E}Memory Usage${hr 2}${color}
+${font}${color}RAM:$color $mem/$memmax - $memperc% ${membar 10;80}
+
+${font DejaVu Sans Mono:size=12}${color 4EE84E}Top RAM Processes${hr 2}${color}
+${font}${top_mem name 1} ${alignr}${top_mem mem 1}%
+${top_mem name 2} ${alignr}${top_mem mem 2}%
+${top_mem name 3} ${alignr}${top_mem mem 3}%
+
+${font DejaVu Sans Mono:size=12}${color 4EE84E}Disk Usage${hr 2}${color}
+${font}${color}Root:$color ${fs_used /}/${fs_size /} ${fs_bar 10;80 /}
+${color}Home:$color ${fs_used /home}/${fs_size /home} ${fs_bar 10;80 /home}
+
+${font DejaVu Sans Mono:size=12}${color 4EE84E}Networking${hr 2}${color}
+${font}${color}IP Address:$color ${alignr}${addr enp7s0}
+${color}External IP: ${alignr}${exec curl -s ifconfig.me}
+${color}Download:$color ${downspeed enp7s0} kB/s ${alignr}${totaldown enp7s0}
+${color}Upload:$color ${upspeed enp7s0} kB/s ${alignr}${totalup enp7s0}
+
+${font DejaVu Sans Mono:size=12}${color 4EE84E}Graphic${hr 2}${color}
+${font}${color}GPU:${alignr}${exec nvidia-smi --query-gpu=name --format=csv,noheader}
+${font}${color}Driver:${alignr} ${exec nvidia-smi --query-gpu=driver_version --format=csv,noheader}
+${font}${color}Temperature:${alignr} ${exec nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader}°C
+${font}${color}Memory Usage:${alignr} ${exec nvidia-smi --query-gpu=memory.used --format=csv,noheader}/${exec nvidia-smi --query-gpu=memory.total --format=csv,noheader} 
+${font}${color}GPU Utilization:${alignr} ${exec nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader}
+${alignc}${font DejaVu Sans Mono:size=16} -----------------------
+]]
